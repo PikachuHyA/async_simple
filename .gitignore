@@ -27,3 +27,4 @@ test.h
 bazel-*
 !BUILD.bazel
 !.bazelrc
+!.github

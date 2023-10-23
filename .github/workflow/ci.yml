@@ -1,0 +1,48 @@
+name: Bazel
+
+on:
+  push:
+    branches: [ ci ]
+  pull_request:
+    branches: [ ci ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Mount bazel cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/bazel
+        key: ${{ runner.os }}-bazel-${{ hashFiles('.bazelversion', '.bazelrc', 'WORKSPACE', 'WORKSPACE.bazel', 'MODULE.bazel') }}
+        restore-keys: |
+          ${{ runner.os }}-bazel-
+      
+    - name: deps
+      run: |
+           sudo apt install -y libaio-dev libgtest-dev libgmock-dev
+
+    - name: Install LLVM 17
+      run: |
+          wget https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 17
+          sudo apt-get install clang-tools-17
+    - name: Use LLVM16
+      run: |
+        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-17 100
+        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-17 100
+        sudo update-alternatives --install /usr/bin/clang-scan-deps clang-scan-deps /usr/bin/clang-scan-deps-17 100
+        sudo update-alternatives --config cc
+
+    - name: Build
+      working-directory: ${{github.workspace}}
+      run: bazel build --action_env=CXX=clang++ --action_env=CC=clang ...
+
+    - name: Test
+      working-directory: ${{github.workspace}}
+      run: bazel test --action_env=CXX=clang++ --action_env=CC=clang --test_output=errors ...
