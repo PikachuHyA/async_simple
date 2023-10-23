@@ -24,3 +24,6 @@ coro_trace.log
 test.h
 *.pcm
 *.out
+bazel-*
+!BUILD.bazel
+!.bazelrc
