@@ -1,3 +1,24 @@
+This repo show how to build async_simple CXX20Modules version with Bazel.
+
+
+install dependencies
+
+```
+sudo apt install -y libaio-dev libgtest-dev libgmock-dev
+```
+
+Currently, Clang 17 + libstdc++ 11 work fine.
+
+
+
+build with bazel
+```
+bazel build --action_env=CC=/usr/bin/clang-17 ...
+bazel test --action_env=CC=/usr/bin/clang-17
+```
+
+---
+
 The branch is used to test the compiler support of C++20 modules, explore the
 practice with C++20 modules and compare the coding style between header based
 and named module based.

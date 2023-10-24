@@ -1,0 +1,66 @@
+name: Bazel
+
+on:
+  push:
+    branches: [ CXX20Modules ]
+  pull_request:
+    branches: [ CXX20Modules ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Mount bazel cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/bazel
+        key: ${{ runner.os }}-bazel-${{ hashFiles('.bazelversion', '.bazelrc', 'WORKSPACE', 'WORKSPACE.bazel', 'MODULE.bazel') }}
+        restore-keys: |
+          ${{ runner.os }}-bazel-
+      
+    - name: deps
+      run: |
+           sudo apt-get install -y libaio-dev libgtest-dev libgmock-dev
+
+    - name: Install LLVM 17
+      run: |
+          wget https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 17
+          sudo apt-get install clang-tools-17
+    - name: Remove old LLVM
+      run: |
+        sudo rm -rf /usr/bin/clang++ /usr/bin/clang
+        sudo rm -rf /usr/bin/clang-scan-deps
+        sudo ln -s /usr/bin/clang-scan-deps-17 /usr/bin/clang-scan-deps
+    - name: Remove GCC 12
+      run: |
+        sudo apt-get remove gcc-12 -y
+        sudo rm -rf /usr/lib/gcc/x86_64-linux-gnu/12
+
+    - name: Use LLVM 17
+      run: |
+        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-17 100
+        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-17 100
+        sudo update-alternatives --install /usr/bin/clang-scan-deps clang-scan-deps /usr/bin/clang-scan-deps-17 100
+        sudo update-alternatives --config cc
+    - name: Check Clang 17
+      run: clang-17 -v
+
+    - name: Download prebuilt bazel
+      run: |
+        wget https://github.com/PikachuHyA/async_simple/releases/download/tmp/bazel
+        chmod +x bazel
+      working-directory: ${{github.workspace}}
+
+    - name: Build
+      working-directory: ${{github.workspace}}
+      run: ./bazel build --action_env=CC=/usr/bin/clang-17 ...
+
+    - name: Test
+      working-directory: ${{github.workspace}}
+      run: ./bazel test --action_env=CC=/usr/bin/clang-17 --test_output=errors ...
