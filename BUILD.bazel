@@ -1,0 +1,237 @@
+COPTS = ["-std=c++20"]
+
+LINKOPTS = [
+    "-lgtest",
+    "-lgmock",
+    "-laio",
+]
+
+cc_library(
+    name = "std",
+    copts = COPTS,
+    features = ["cpp_modules"],
+    module_interfaces = glob(["third_party_module/stdmodules/*.cppm"]),
+)
+
+cc_library(
+    name = "asio",
+    hdrs = glob(["third_party_module/asio/asio/**"]) + ["third_party_module/asio/asio.hpp"],
+    copts = COPTS,
+    features = ["cpp_modules"],
+    includes = ["third_party_module/asio"],
+    module_interfaces = ["third_party_module/asio/asio.cppm"],
+)
+
+cc_library(
+    name = "async_simple",
+    srcs = glob(["async_simple_module/uthread/internal/*.S"]),
+    copts = COPTS + [
+        "-Xclang",
+        "-fmodules-embed-all-files",
+    ],
+    features = ["cpp_modules"],
+    module_interfaces = glob(
+        [
+            "async_simple_module/**/*.cppm",
+        ],
+        exclude = ["async_simple_module/test"],
+    ),
+    deps = [
+        ":asio",
+        ":std",
+    ],
+)
+
+cc_library(
+    name = "test_common",
+    srcs = ["async_simple_module/test/dotest.cpp"],
+    hdrs = ["async_simple_module/test/unittest.h"],
+    linkopts = LINKOPTS,
+)
+
+cc_test(
+    name = "async_simple_test",
+    srcs = [
+        "async_simple_module/test/FutureStateTest.cpp",
+        "async_simple_module/test/FutureTest.cpp",
+        "async_simple_module/test/TryTest.cpp",
+    ],
+    copts = COPTS,
+    features = ["cpp_modules"],
+    deps = [
+        ":async_simple",
+        ":test_common",
+    ],
+)
+
+cc_test(
+    name = "async_simple_coro_test",
+    srcs = glob([
+        "async_simple_module/test/coro/*.cpp",
+        "async_simple_module/test/coro/*.h",
+    ]),
+    copts = COPTS,
+    features = ["cpp_modules"],
+    deps = [
+        ":async_simple",
+        ":test_common",
+    ],
+)
+
+cc_test(
+    name = "async_simple_uthread_test",
+    srcs = glob([
+        "async_simple_module/test/uthread/*.cpp",
+    ]),
+    copts = COPTS,
+    features = ["cpp_modules"],
+    deps = [
+        ":async_simple",
+        ":test_common",
+    ],
+)
+
+cc_test(
+    name = "async_simple_util_test",
+    srcs = glob([
+        "async_simple_module/test/util/*.cpp",
+    ]),
+    copts = COPTS,
+    features = ["cpp_modules"],
+    deps = [
+        ":async_simple",
+        ":test_common",
+    ],
+)
+
+cc_binary(
+    name = "CountChar",
+    srcs = ["demo_example_module/CountChar.cpp"],
+    copts = COPTS,
+    features = ["cpp_modules"],
+    linkopts = ["-laio"],
+    deps = [
+        ":async_simple",
+        ":std",
+    ],
+)
+
+cc_binary(
+    name = "ReadFiles",
+    srcs = ["demo_example_module/ReadFiles.cpp"],
+    copts = COPTS,
+    features = ["cpp_modules"],
+    linkopts = ["-laio"],
+    deps = [
+        ":async_simple",
+        ":std",
+    ],
+)
+
+cc_library(
+    name = "asio_util",
+    copts = COPTS + [
+        "-Xclang",
+        "-fmodules-embed-all-files",
+    ],
+    features = ["cpp_modules"],
+    module_interfaces = ["demo_example_module/asio_util.cppm"],
+    deps = [
+        ":asio",
+        ":async_simple",
+    ],
+)
+
+cc_library(
+    name = "example_common",
+    linkopts = ["-laio"],
+    deps = [
+        ":asio_util",
+        ":std",
+    ],
+)
+
+cc_binary(
+    name = "async_echo_server",
+    srcs = ["demo_example_module/async_echo_server.cpp"],
+    copts = COPTS,
+    features = ["cpp_modules"],
+    deps = [
+        ":example_common",
+    ],
+)
+
+cc_binary(
+    name = "async_echo_client",
+    srcs = ["demo_example_module/async_echo_client.cpp"],
+    copts = COPTS,
+    features = ["cpp_modules"],
+    deps = [
+        ":example_common",
+    ],
+)
+
+cc_binary(
+    name = "block_echo_server",
+    srcs = ["demo_example_module/block_echo_server.cpp"],
+    copts = COPTS,
+    features = ["cpp_modules"],
+    deps = [
+        ":example_common",
+    ],
+)
+
+cc_binary(
+    name = "block_echo_client",
+    srcs = ["demo_example_module/block_echo_client.cpp"],
+    copts = COPTS,
+    features = ["cpp_modules"],
+    deps = [
+        ":example_common",
+    ],
+)
+
+cc_binary(
+    name = "http_server",
+    srcs = [
+        "demo_example_module/http/coroutine_http/connection.hpp",
+        "demo_example_module/http/coroutine_http/http_server.cpp",
+        "demo_example_module/http/http_request.hpp",
+        "demo_example_module/http/http_response.hpp",
+    ],
+    copts = COPTS,
+    features = ["cpp_modules"],
+    deps = [
+        ":example_common",
+    ],
+)
+
+cc_binary(
+    name = "http_client",
+    srcs = ["demo_example_module/http/coroutine_http/http_client.cpp"],
+    copts = COPTS,
+    features = ["cpp_modules"],
+    deps = [
+        ":example_common",
+    ],
+)
+
+cc_binary(
+    name = "block_http_server",
+    srcs = [
+        "demo_example_module/http/block_http/block_connection.hpp",
+        "demo_example_module/http/block_http/block_http_server.cpp",
+        "demo_example_module/http/coroutine_http/connection.hpp",
+        "demo_example_module/http/http_request.hpp",
+        "demo_example_module/http/http_response.hpp",
+    ],
+    copts = COPTS,
+    features = ["cpp_modules"],
+    includes = [
+        "demo_example_module/http/block_http",
+        "demo_example_module/http/coroutine_http",
+    ],
+    deps = [
+        ":example_common",
+    ],
+)

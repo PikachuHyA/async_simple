@@ -1,0 +1,3 @@
+common --noenable_bzlmod
+common --enable_workspace=yes
+build --experimental_cpp_modules
