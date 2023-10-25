@@ -130,7 +130,10 @@ cc_binary(
 
 cc_library(
     name = "asio_util",
-    copts = COPTS,
+    copts = COPTS + [
+        "-Xclang",
+        "-fmodules-embed-all-files",
+    ],
     features = ["cpp20_module"],
     module_interfaces = ["demo_example_module/asio_util.cppm"],
     deps = [
