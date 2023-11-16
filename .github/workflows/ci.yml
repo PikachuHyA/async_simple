@@ -42,6 +42,11 @@ jobs:
         sudo apt-get remove gcc-12 -y
         sudo rm -rf /usr/lib/gcc/x86_64-linux-gnu/12
 
+    - name: Remove GCC 13
+      run: |
+        sudo apt-get remove gcc-13 -y
+        sudo rm -rf /usr/lib/gcc/x86_64-linux-gnu/13
+
     - name: Use LLVM 17
       run: |
         sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-17 100
