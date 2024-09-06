@@ -58,7 +58,7 @@ jobs:
 
     - name: Download prebuilt bazel
       run: |
-        wget https://github.com/PikachuHyA/bazel/releases/download/cxx20-modules-support-v20231116/bazel
+        wget https://github.com/PikachuHyA/async_simple/releases/download/bazel/bazel
         chmod +x bazel
       working-directory: ${{github.workspace}}
 

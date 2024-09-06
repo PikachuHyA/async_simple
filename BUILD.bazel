@@ -9,7 +9,7 @@ LINKOPTS = [
 cc_library(
     name = "std",
     copts = COPTS,
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     module_interfaces = glob(["third_party_module/stdmodules/*.cppm"]),
 )
 
@@ -17,7 +17,7 @@ cc_library(
     name = "asio",
     hdrs = glob(["third_party_module/asio/asio/**"]) + ["third_party_module/asio/asio.hpp"],
     copts = COPTS,
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     includes = ["third_party_module/asio"],
     module_interfaces = ["third_party_module/asio/asio.cppm"],
 )
@@ -29,7 +29,7 @@ cc_library(
         "-Xclang",
         "-fmodules-embed-all-files",
     ],
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     module_interfaces = glob(
         [
             "async_simple_module/**/*.cppm",
@@ -57,7 +57,7 @@ cc_test(
         "async_simple_module/test/TryTest.cpp",
     ],
     copts = COPTS,
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     deps = [
         ":async_simple",
         ":test_common",
@@ -71,7 +71,7 @@ cc_test(
         "async_simple_module/test/coro/*.h",
     ]),
     copts = COPTS,
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     deps = [
         ":async_simple",
         ":test_common",
@@ -84,7 +84,7 @@ cc_test(
         "async_simple_module/test/uthread/*.cpp",
     ]),
     copts = COPTS,
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     deps = [
         ":async_simple",
         ":test_common",
@@ -97,7 +97,7 @@ cc_test(
         "async_simple_module/test/util/*.cpp",
     ]),
     copts = COPTS,
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     deps = [
         ":async_simple",
         ":test_common",
@@ -108,7 +108,7 @@ cc_binary(
     name = "CountChar",
     srcs = ["demo_example_module/CountChar.cpp"],
     copts = COPTS,
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     linkopts = ["-laio"],
     deps = [
         ":async_simple",
@@ -120,7 +120,7 @@ cc_binary(
     name = "ReadFiles",
     srcs = ["demo_example_module/ReadFiles.cpp"],
     copts = COPTS,
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     linkopts = ["-laio"],
     deps = [
         ":async_simple",
@@ -134,7 +134,7 @@ cc_library(
         "-Xclang",
         "-fmodules-embed-all-files",
     ],
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     module_interfaces = ["demo_example_module/asio_util.cppm"],
     deps = [
         ":asio",
@@ -155,7 +155,7 @@ cc_binary(
     name = "async_echo_server",
     srcs = ["demo_example_module/async_echo_server.cpp"],
     copts = COPTS,
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     deps = [
         ":example_common",
     ],
@@ -165,7 +165,7 @@ cc_binary(
     name = "async_echo_client",
     srcs = ["demo_example_module/async_echo_client.cpp"],
     copts = COPTS,
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     deps = [
         ":example_common",
     ],
@@ -175,7 +175,7 @@ cc_binary(
     name = "block_echo_server",
     srcs = ["demo_example_module/block_echo_server.cpp"],
     copts = COPTS,
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     deps = [
         ":example_common",
     ],
@@ -185,7 +185,7 @@ cc_binary(
     name = "block_echo_client",
     srcs = ["demo_example_module/block_echo_client.cpp"],
     copts = COPTS,
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     deps = [
         ":example_common",
     ],
@@ -200,7 +200,7 @@ cc_binary(
         "demo_example_module/http/http_response.hpp",
     ],
     copts = COPTS,
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     deps = [
         ":example_common",
     ],
@@ -210,7 +210,7 @@ cc_binary(
     name = "http_client",
     srcs = ["demo_example_module/http/coroutine_http/http_client.cpp"],
     copts = COPTS,
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     deps = [
         ":example_common",
     ],
@@ -226,7 +226,7 @@ cc_binary(
         "demo_example_module/http/http_response.hpp",
     ],
     copts = COPTS,
-    features = ["cpp20_module"],
+    features = ["cpp_modules"],
     includes = [
         "demo_example_module/http/block_http",
         "demo_example_module/http/coroutine_http",
