@@ -26,30 +26,30 @@ jobs:
       run: |
            sudo apt-get install -y libaio-dev libgtest-dev libgmock-dev
 
-    - name: Install LLVM 17
+    - name: Install LLVM 18
       run: |
           wget https://apt.llvm.org/llvm.sh
           chmod +x llvm.sh
-          sudo ./llvm.sh 17
-          sudo apt-get install clang-tools-17
+          sudo ./llvm.sh 18
+          sudo apt-get install clang-tools-18
     - name: Remove old LLVM
       run: |
         sudo rm -rf /usr/bin/clang++ /usr/bin/clang
         sudo rm -rf /usr/bin/clang-scan-deps
-        sudo ln -s /usr/bin/clang-scan-deps-17 /usr/bin/clang-scan-deps
+        sudo ln -s /usr/bin/clang-scan-deps-18 /usr/bin/clang-scan-deps
     - name: Remove GCC 12
       run: |
         sudo apt-get remove gcc-12 -y
         sudo rm -rf /usr/lib/gcc/x86_64-linux-gnu/12
 
-    - name: Use LLVM 17
+    - name: Use LLVM 18
       run: |
-        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-17 100
-        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-17 100
-        sudo update-alternatives --install /usr/bin/clang-scan-deps clang-scan-deps /usr/bin/clang-scan-deps-17 100
+        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 100
+        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
+        sudo update-alternatives --install /usr/bin/clang-scan-deps clang-scan-deps /usr/bin/clang-scan-deps-18 100
         sudo update-alternatives --config cc
-    - name: Check Clang 17
-      run: clang-17 -v
+    - name: Check Clang 18
+      run: clang-18 -v
 
     - name: Download prebuilt bazel
       run: |
@@ -59,8 +59,8 @@ jobs:
 
     - name: Build
       working-directory: ${{github.workspace}}
-      run: ./bazel build --action_env=CC=/usr/bin/clang-17 ...
+      run: ./bazel build --action_env=CC=/usr/bin/clang-18 ...
 
     - name: Test
       working-directory: ${{github.workspace}}
-      run: ./bazel test --action_env=CC=/usr/bin/clang-17 --test_output=errors ...
+      run: ./bazel test --action_env=CC=/usr/bin/clang-18 --test_output=errors ...
