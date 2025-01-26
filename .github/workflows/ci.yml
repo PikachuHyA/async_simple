@@ -53,7 +53,7 @@ jobs:
 
     - name: Download prebuilt bazel
       run: |
-        wget https://github.com/PikachuHyA/async_simple/releases/download/bazel/bazel
+        wget https://github.com/PikachuHyA/async_simple/releases/download/bazel_v20250126/bazel
         chmod +x bazel
       working-directory: ${{github.workspace}}
 
