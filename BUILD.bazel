@@ -1,14 +1,13 @@
 COPTS = ["-std=c++20"]
 
 LINKOPTS = [
-    "-lgtest",
-    "-lgmock",
     "-laio",
 ]
 
 cc_library(
     name = "std",
     copts = COPTS,
+    hdrs = ["third_party_module/stdmodules/my_coroutine"],
     features = ["cpp_modules"],
     module_interfaces = glob(["third_party_module/stdmodules/*.cppm"]),
 )
@@ -47,6 +46,7 @@ cc_library(
     srcs = ["async_simple_module/test/dotest.cpp"],
     hdrs = ["async_simple_module/test/unittest.h"],
     linkopts = LINKOPTS,
+    deps = ["@com_google_googletest//:gtest"],
 )
 
 cc_test(
