@@ -1,0 +1,9 @@
+--- /dev/null
++++ google_benchmark.cppm
+@@ -0,0 +1,6 @@
++#pragma ACC modules "export-all"
++#pragma ACC modules "export-macros"
++module;
++#include "benchmark/benchmark.h"
++#include "benchmark/export.h"
++export module google_benchmark;

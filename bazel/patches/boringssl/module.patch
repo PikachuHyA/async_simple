@@ -1,0 +1,253 @@
+--- BUILD.bazel
++++ BUILD.bazel
+@@ -81,7 +81,9 @@ bssl_cc_library(
+     linkopts = select({
+         "//conditions:default": ["-pthread"],
+     }),
+     visibility = ["//visibility:public"],
++    module_interfaces = ["crypto.cppm"],
++    module_header_maps = ["crypto.modulemap"],
+ )
+ 
+ bssl_cc_library(
+@@ -92,6 +94,8 @@ bssl_cc_library(
+     hdrs = ssl_headers,
+     copts = ["-DBORINGSSL_IMPLEMENTATION"],
+     internal_hdrs = ssl_internal_headers,
+     visibility = ["//visibility:public"],
+     deps = [":crypto_internal"],
++    module_interfaces = ["ssl.cppm"],
++    module_header_maps = ["ssl.modulemap"],
+ )
+--- util/util.bzl
++++ util/util.bzl
+@@ -189,6 +189,8 @@ def bssl_cc_library(
+         srcs = [],
+         testonly = False,
+         alwayslink = False,
++        module_interfaces = [],
++        module_header_maps = [],
+         visibility = []):
+     copts, deps, srcs = handle_mixed_c_cxx(
+         name = name,
+@@ -228,5 +230,7 @@ def bssl_cc_library(
+         deps = deps,
+         testonly = testonly,
+         alwayslink = alwayslink,
++        module_interfaces = module_interfaces,
++        module_header_maps = module_header_maps,
+         **linkstatic_kwargs(linkstatic)
+     )
+--- /dev/null
++++ crypto.cppm
+@@ -0,0 +1,93 @@
++#pragma ACC modules "export-all"
++#pragma ACC modules "export-macros"
++module;
++#include "openssl/aead.h"
++#include "openssl/aes.h"
++#include "openssl/arm_arch.h"
++#include "openssl/asm_base.h"
++#include "openssl/asn1.h"
++#include "openssl/asn1_mac.h"
++#include "openssl/asn1t.h"
++#include "openssl/base.h"
++#include "openssl/base64.h"
++#include "openssl/bcm_public.h"
++#include "openssl/bio.h"
++#include "openssl/blake2.h"
++#include "openssl/blowfish.h"
++#include "openssl/bn.h"
++#include "openssl/buf.h"
++#include "openssl/buffer.h"
++#include "openssl/bytestring.h"
++#include "openssl/cast.h"
++#include "openssl/chacha.h"
++#include "openssl/cipher.h"
++#include "openssl/cmac.h"
++#include "openssl/conf.h"
++#include "openssl/cpu.h"
++#include "openssl/crypto.h"
++#include "openssl/ctrdrbg.h"
++#include "openssl/curve25519.h"
++#include "openssl/des.h"
++#include "openssl/dh.h"
++#include "openssl/digest.h"
++#include "openssl/dsa.h"
++#include "openssl/e_os2.h"
++#include "openssl/ec.h"
++#include "openssl/ec_key.h"
++#include "openssl/ecdh.h"
++#include "openssl/ecdsa.h"
++#include "openssl/engine.h"
++#include "openssl/err.h"
++#include "openssl/evp.h"
++#include "openssl/evp_errors.h"
++#include "openssl/ex_data.h"
++#define OPENSSL_UNSTABLE_EXPERIMENTAL_KYBER
++#include "openssl/experimental/kyber.h"
++#include "openssl/hkdf.h"
++#include "openssl/hmac.h"
++#include "openssl/hpke.h"
++#include "openssl/hrss.h"
++#include "openssl/is_boringssl.h"
++#include "openssl/kdf.h"
++#include "openssl/lhash.h"
++#include "openssl/md4.h"
++#include "openssl/md5.h"
++#include "openssl/mem.h"
++#include "openssl/mldsa.h"
++#include "openssl/mlkem.h"
++#include "openssl/nid.h"
++#include "openssl/obj.h"
++#include "openssl/obj_mac.h"
++#include "openssl/objects.h"
++#include "openssl/opensslconf.h"
++#include "openssl/opensslv.h"
++#include "openssl/ossl_typ.h"
++#include "openssl/pem.h"
++#include "openssl/pkcs12.h"
++#include "openssl/pkcs7.h"
++#include "openssl/pkcs8.h"
++#include "openssl/poly1305.h"
++#include "openssl/pool.h"
++#include "openssl/posix_time.h"
++#include "openssl/rand.h"
++#include "openssl/rc4.h"
++#include "openssl/ripemd.h"
++#include "openssl/rsa.h"
++#include "openssl/safestack.h"
++#include "openssl/service_indicator.h"
++#include "openssl/sha.h"
++#include "openssl/siphash.h"
++#include "openssl/slhdsa.h"
++#include "openssl/span.h"
++#include "openssl/stack.h"
++#include "openssl/target.h"
++#include "openssl/thread.h"
++#include "openssl/time.h"
++#include "openssl/trust_token.h"
++#include "openssl/type_check.h"
++#include "openssl/x509.h"
++#include "openssl/x509_vfy.h"
++#include "openssl/x509v3.h"
++#include "openssl/x509v3_errors.h"
++export module boringssl_crypto;
++
+--- /dev/null
++++ crypto.modulemap
+@@ -0,0 +1,90 @@
++module boringssl_crypto {
++    header "include/openssl/aead.h"
++    header "include/openssl/aes.h"
++    header "include/openssl/arm_arch.h"
++    header "include/openssl/asm_base.h"
++    header "include/openssl/asn1.h"
++    header "include/openssl/asn1_mac.h"
++    header "include/openssl/asn1t.h"
++    header "include/openssl/base.h"
++    header "include/openssl/base64.h"
++    header "include/openssl/bcm_public.h"
++    header "include/openssl/bio.h"
++    header "include/openssl/blake2.h"
++    header "include/openssl/blowfish.h"
++    header "include/openssl/bn.h"
++    header "include/openssl/buf.h"
++    header "include/openssl/buffer.h"
++    header "include/openssl/bytestring.h"
++    header "include/openssl/cast.h"
++    header "include/openssl/chacha.h"
++    header "include/openssl/cipher.h"
++    header "include/openssl/cmac.h"
++    header "include/openssl/conf.h"
++    header "include/openssl/cpu.h"
++    header "include/openssl/crypto.h"
++    header "include/openssl/ctrdrbg.h"
++    header "include/openssl/curve25519.h"
++    header "include/openssl/des.h"
++    header "include/openssl/dh.h"
++    header "include/openssl/digest.h"
++    header "include/openssl/dsa.h"
++    header "include/openssl/e_os2.h"
++    header "include/openssl/ec.h"
++    header "include/openssl/ec_key.h"
++    header "include/openssl/ecdh.h"
++    header "include/openssl/ecdsa.h"
++    header "include/openssl/engine.h"
++    header "include/openssl/err.h"
++    header "include/openssl/evp.h"
++    header "include/openssl/evp_errors.h"
++    header "include/openssl/ex_data.h"
++    header "include/openssl/experimental/kyber.h"
++    header "include/openssl/hkdf.h"
++    header "include/openssl/hmac.h"
++    header "include/openssl/hpke.h"
++    header "include/openssl/hrss.h"
++    header "include/openssl/is_boringssl.h"
++    header "include/openssl/kdf.h"
++    header "include/openssl/lhash.h"
++    header "include/openssl/md4.h"
++    header "include/openssl/md5.h"
++    header "include/openssl/mem.h"
++    header "include/openssl/mldsa.h"
++    header "include/openssl/mlkem.h"
++    header "include/openssl/nid.h"
++    header "include/openssl/obj.h"
++    header "include/openssl/obj_mac.h"
++    header "include/openssl/objects.h"
++    header "include/openssl/opensslconf.h"
++    header "include/openssl/opensslv.h"
++    header "include/openssl/ossl_typ.h"
++    header "include/openssl/pem.h"
++    header "include/openssl/pkcs12.h"
++    header "include/openssl/pkcs7.h"
++    header "include/openssl/pkcs8.h"
++    header "include/openssl/poly1305.h"
++    header "include/openssl/pool.h"
++    header "include/openssl/posix_time.h"
++    header "include/openssl/rand.h"
++    header "include/openssl/rc4.h"
++    header "include/openssl/ripemd.h"
++    header "include/openssl/rsa.h"
++    header "include/openssl/safestack.h"
++    header "include/openssl/service_indicator.h"
++    header "include/openssl/sha.h"
++    header "include/openssl/siphash.h"
++    header "include/openssl/slhdsa.h"
++    header "include/openssl/span.h"
++    header "include/openssl/stack.h"
++    header "include/openssl/target.h"
++    header "include/openssl/thread.h"
++    header "include/openssl/time.h"
++    header "include/openssl/trust_token.h"
++    header "include/openssl/type_check.h"
++    header "include/openssl/x509.h"
++    header "include/openssl/x509_vfy.h"
++    header "include/openssl/x509v3.h"
++    header "include/openssl/x509v3_errors.h"
++}
++
+--- /dev/null
++++ ssl.cppm
+@@ -0,0 +1,10 @@
++#pragma ACC modules "export-all"
++#pragma ACC modules "export-macros"
++module;
++#include "openssl/dtls1.h"
++#include "openssl/srtp.h"
++#include "openssl/ssl.h"
++#include "openssl/ssl3.h"
++#include "openssl/tls1.h"
++export module boringssl_ssl;
++
+--- /dev/null
++++ ssl.modulemap
+@@ -0,0 +1,8 @@
++module boringssl_ssl {
++    header "include/openssl/dtls1.h"
++    header "include/openssl/srtp.h"
++    header "include/openssl/ssl.h"
++    header "include/openssl/ssl3.h"
++    header "include/openssl/tls1.h"
++}
++

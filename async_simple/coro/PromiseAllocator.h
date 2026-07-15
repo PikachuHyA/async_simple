@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <concepts>
 #include <cstring>
+#include <cstdint>
 #include <memory>
 #include <new>
 #include <type_traits>

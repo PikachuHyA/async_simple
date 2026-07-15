@@ -1,0 +1,8 @@
+--- MODULE.bazel
++++ MODULE.bazel
+@@ -79,3 +79,5 @@
+ fuchsia_sdk = use_extension("//:fake_fuchsia_sdk.bzl", "fuchsia_sdk")
+ fuchsia_sdk.create_fake()
+ use_repo(fuchsia_sdk, "fuchsia_sdk")
++bazel_dep(name = "rules_cc", version = "0.2.16")
++bazel_dep(name = "std_module")

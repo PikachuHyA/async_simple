@@ -1,0 +1,8 @@
+--- /dev/null
++++ asio.modulemap
+@@ -0,0 +1,5 @@
++module asio {
++    header "asio/include/asio.hpp"
++    header "asio/include/asio/ssl.hpp"
++}
++

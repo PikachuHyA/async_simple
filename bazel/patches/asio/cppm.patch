@@ -1,0 +1,10 @@
+--- /dev/null
++++ asio.cppm
+@@ -0,0 +1,7 @@
++#pragma ACC modules "export-all"
++#pragma ACC modules "export-macros"
++module;
++#include "asio.hpp"
++#include "asio/ssl.hpp"
++export module asio;
++

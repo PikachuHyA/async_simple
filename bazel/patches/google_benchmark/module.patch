@@ -1,0 +1,48 @@
+--- MODULE.bazel
++++ MODULE.bazel
+@@ -39,3 +39,5 @@
+ # -- bazel_dep definitions -- #
+ 
+ bazel_dep(name = "nanobind_bazel", version = "2.9.2", dev_dependency = True)
++
++bazel_dep(name = "std_module")
+--- BUILD.bazel
++++ BUILD.bazel
+@@ -5,7 +5,7 @@
+ COPTS = [
+     "-pedantic",
+     "-pedantic-errors",
+-    "-std=c++17",
++    # "-std=c++17",
+     "-Wall",
+     "-Wconversion",
+     "-Wextra",
+@@ -81,7 +81,11 @@
+     deps = select({
+         ":perfcounters": ["@libpfm"],
+         "//conditions:default": [],
+-    }),
++    }) + [
++        "@std_module//:std"
++    ],
++    module_interfaces = ["google_benchmark.cppm"],
++    module_header_maps = ["google_benchmark.modulemap"],
+ )
+ 
+ cc_library(
+--- /dev/null
++++ google_benchmark.cppm
+@@ -0,0 +1,6 @@
++#pragma ACC modules "export-all"
++#pragma ACC modules "export-macros"
++module;
++#include "benchmark/benchmark.h"
++#include "benchmark/export.h"
++export module google_benchmark;
+--- /dev/null
++++ google_benchmark.modulemap
+@@ -0,0 +1,4 @@
++module google_benchmark {
++    header "include/benchmark/benchmark.h"
++    header "include/benchmark/export.h"
++}

@@ -1,0 +1,9 @@
+exports_files([
+    "build.patch",
+    "crypto-cppm.patch",
+    "crypto-modulemap.patch",
+    "module.patch",
+    "ssl-cppm.patch",
+    "ssl-modulemap.patch",
+    "util.patch",
+])

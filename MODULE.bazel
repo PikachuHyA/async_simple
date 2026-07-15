@@ -1,8 +1,34 @@
 module(name = "com_github_async_simple")
 
 bazel_dep(name = "asio", version = "1.34.2")
+archive_override(
+    module_name = "asio",
+    urls = ["https://github.com/chriskohlhoff/asio/archive/refs/tags/asio-1-34-2.tar.gz"],
+    integrity = "sha256-87rAFTBfu3AFRb0pWfvFLXWh7C4F+cf2lYASc863jPU=",
+    strip_prefix = "asio-asio-1-34-2",
+    patches = [
+        "//bazel/patches/asio:build.patch",
+        "//bazel/patches/asio:module-bazel.patch",
+        "//bazel/patches/asio:cppm.patch",
+        "//bazel/patches/asio:modulemap.patch",
+    ],
+    patch_strip = 0
+)
 bazel_dep(name = "bazel_skylib", version = "1.8.2")
 bazel_dep(name = "libaio", version = "0.3.113.bcr.0")
+archive_override(
+    module_name = "libaio",
+    urls = ["https://pagure.io/libaio/archive/libaio-0.3.113/libaio-0.3.113.tar.gz"],
+    integrity = "sha256-HFYcIGcMXAnMhDemIgCMBpPGp4FsHzAzLaN5aVOy9FQ=",
+    strip_prefix = "libaio-0.3.113",
+    patches = [
+        "//bazel/patches/libaio:module-bazel.patch",
+        "//bazel/patches/libaio:build.patch",
+        "//bazel/patches/libaio:cppm.patch",
+        "//bazel/patches/libaio:modulemap.patch",
+    ],
+    patch_strip = 0
+)
 bazel_dep(name = "platforms", version = "1.0.0")
 bazel_dep(name = "rules_cc", version = "0.2.16")
 
@@ -10,6 +36,49 @@ bazel_dep(name = "googletest", version = "1.17.0.bcr.2", dev_dependency = True, 
 bazel_dep(name = "google_benchmark", version = "1.9.5", dev_dependency = True, repo_name = "com_google_benchmark")
 bazel_dep(name = "boringssl", version = "0.20250311.0", dev_dependency = True)
 
+archive_override(
+    module_name = "boringssl",
+    urls = ["https://github.com/google/boringssl/releases/download/0.20250311.0/boringssl-0.20250311.0.tar.gz"],
+    integrity = "sha256-73PkU8L2Dzeo8dMOBFjadu1mlfRHaPsgBnYkIFsHbfY=",
+    strip_prefix = "boringssl-0.20250311.0",
+    patches = [
+        "//bazel/patches/boringssl:build.patch",
+        "//bazel/patches/boringssl:util.patch",
+        "//bazel/patches/boringssl:crypto-cppm.patch",
+        "//bazel/patches/boringssl:crypto-modulemap.patch",
+        "//bazel/patches/boringssl:ssl-cppm.patch",
+        "//bazel/patches/boringssl:ssl-modulemap.patch",
+    ],
+    patch_strip = 0
+)
+
+archive_override(
+    module_name = "google_benchmark",
+    urls = ["https://github.com/google/benchmark/archive/refs/tags/v1.9.5.tar.gz"],
+    integrity = "sha256-ljE0HIK6xKKIvvlR+LJrQfaQIXlBhOzpafhHOXfqo0A=",
+    strip_prefix = "benchmark-1.9.5",
+    patches = [
+        "//bazel/patches/google_benchmark:module-bazel.patch",
+        "//bazel/patches/google_benchmark:build.patch",
+        "//bazel/patches/google_benchmark:cppm.patch",
+        "//bazel/patches/google_benchmark:modulemap.patch",
+    ],
+    patch_strip = 0
+)
+archive_override(
+    module_name = "googletest",
+    urls = ["https://github.com/google/googletest/releases/download/v1.17.0/googletest-1.17.0.tar.gz"],
+    integrity = "sha256-Zfq3AdmCnTjLd8FKzcQx0hCL/b+JeeQOuK5Wft8Qsnw=",
+    strip_prefix = "googletest-1.17.0",
+    patches = [
+        "//bazel/patches/googletest:module-bazel.patch",
+        "//bazel/patches/googletest:load.patch",
+        "//bazel/patches/googletest:build.patch",
+        "//bazel/patches/googletest:cppm.patch",
+        "//bazel/patches/googletest:modulemap.patch",
+    ],
+    patch_strip = 0
+)
 # Hedron's Compile Commands Extractor for Bazel
 # https://github.com/hedronvision/bazel-compile-commands-extractor
 bazel_dep(name = "hedron_compile_commands", dev_dependency = True)
@@ -17,4 +86,10 @@ git_override(
     module_name = "hedron_compile_commands",
     commit = "1e08f8e0507b6b6b1f4416a9a22cf5c28beaba93",
     remote = "https://github.com/hedronvision/bazel-compile-commands-extractor.git",
+)
+
+bazel_dep(name = "std_module")
+local_path_override(
+    module_name = "std_module",
+    path = "std_module"
 )

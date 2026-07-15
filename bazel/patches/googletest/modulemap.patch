@@ -1,0 +1,39 @@
+--- /dev/null
++++ googletest.modulemap
+@@ -0,0 +1,36 @@
++module googletest {
++    header "googletest/include/gtest/gtest-assertion-result.h"
++    header "googletest/include/gtest/gtest-message.h"
++    header "googletest/include/gtest/gtest-spi.h"
++    header "googletest/include/gtest/gtest.h"
++    header "googletest/include/gtest/gtest-death-test.h"
++    header "googletest/include/gtest/gtest-param-test.h"
++    header "googletest/include/gtest/gtest-test-part.h"
++    header "googletest/include/gtest/gtest_pred_impl.h"
++    header "googletest/include/gtest/gtest-matchers.h"
++    header "googletest/include/gtest/gtest-printers.h"
++    header "googletest/include/gtest/gtest-typed-test.h"
++    header "googletest/include/gtest/gtest_prod.h"
++    // gmock
++    header "googlemock/include/gmock/gmock-actions.h"
++    header "googlemock/include/gmock/gmock-function-mocker.h"
++    header "googlemock/include/gmock/gmock-more-actions.h"
++    header "googlemock/include/gmock/gmock-nice-strict.h"
++    header "googlemock/include/gmock/gmock.h"
++    header "googlemock/include/gmock/gmock-cardinalities.h"
++    header "googlemock/include/gmock/gmock-matchers.h"
++    header "googlemock/include/gmock/gmock-more-matchers.h"
++    header "googlemock/include/gmock/gmock-spec-builders.h"
++    // internal
++    header "googletest/include/gtest/internal/gtest-death-test-internal.h"
++    header "googletest/include/gtest/internal/gtest-filepath.h"
++    header "googletest/include/gtest/internal/gtest-internal.h"
++    header "googletest/include/gtest/internal/gtest-param-util.h"
++    header "googletest/include/gtest/internal/gtest-port-arch.h"
++    header "googletest/include/gtest/internal/gtest-port.h"
++    header "googletest/include/gtest/internal/gtest-string.h"
++    header "googletest/include/gtest/internal/gtest-type-util.h"
++    header "googlemock/include/gmock/internal/gmock-internal-utils.h"
++    header "googlemock/include/gmock/internal/gmock-port.h"
++    header "googlemock/include/gmock/internal/gmock-pp.h"
++}

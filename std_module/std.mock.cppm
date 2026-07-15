@@ -1,26 +1,37 @@
+#pragma ACC modules "export-all"
+#pragma ACC modules "export-macros"
 // FIXME: This is a workaround implementation for std module
 // to ease the use of modules. Please replace this with the official std module
 // when that is available.
 module;
+#include <unistd.h>
 #include <algorithm>
+#include <any>
 #include <array>
 #include <atomic>
+#include <bitset>
 #include <chrono>
 #include <concepts>
 #include <condition_variable>
 #include <coroutine>
+#include <cassert>
+#include <climits>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <cinttypes>
+#include <cstdarg>
 #include <exception>
 #include <fstream>
+#include <filesystem>
 #include <functional>
 #include <future>
 #include <iostream>
 #include <iterator>
 #include <limits>
+#include <list>
 #include <memory>
 #include <mutex>
 #include <new>
@@ -28,12 +39,14 @@ module;
 #include <queue>
 #include <ranges>
 #include <ratio>
+#include <random>
 #include <semaphore>
 #include <stdexcept>
 #include <string>
 #include <thread>
 #include <tuple>
 #include <type_traits>
+#include <unordered_set>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -48,7 +61,7 @@ export module std;
 #if defined(__clang__)
 #pragma clang diagnostic pop
 #endif
-
+#if 0
 export namespace std {
 using std::vector;
 using std::operator==;
@@ -1857,15 +1870,15 @@ using std::hash;
 }  // namespace std
 
 export namespace std {
+using std::any;
+using std::any_cast;
+using std::bad_any_cast;
+using std::make_any;
 using std::popcount;
 using std::countr_zero;
+using std::list;
 using std::promise;
 using std::unordered_map;
+using std::unordered_set;
 }
-
-#if defined(__GLIBCXX__) || defined(__GLIBCPP__)
-export namespace __gnu_cxx {
-using __gnu_cxx::operator==;
-using __gnu_cxx::operator-;
-}  // namespace __gnu_cxx
 #endif

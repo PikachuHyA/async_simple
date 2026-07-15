@@ -1,0 +1,53 @@
+--- /dev/null
++++ BUILD.bazel
+@@ -0,0 +1,20 @@
++load("@rules_cc//cc:defs.bzl", "cc_library")
++
++cc_library(
++    name = "asio",
++    srcs = [
++        #"asio/src/asio.cpp",
++        #"asio/src/asio_ssl.cpp",
++    ],
++    hdrs = glob([
++        "asio/include/**/*.hpp",
++        "asio/include/**/*.ipp",
++    ]),
++    includes = ["asio/include"],
++    local_defines = ["ASIO_SEPARATE_COMPILATION"],
++    visibility = ["//visibility:public"],
++    deps = ["@boringssl//:ssl"] + ["@std_module//:std"],
++    module_interfaces = ["asio.cppm"],
++    module_header_maps = ["asio.modulemap"],
++)
++
+--- /dev/null
++++ MODULE.bazel
+@@ -0,0 +1,8 @@
++module(
++    name = "asio",
++    version = "1.34.2",
++    compatibility_level = 1,
++    bazel_compatibility = [">=7.2.1"],
++)
++bazel_dep(name = "boringssl", version = "0.20240930.0")
++bazel_dep(name = "rules_cc", version = "0.2.16")
++bazel_dep(name = "std_module")
+--- /dev/null
++++ asio.cppm
+@@ -0,0 +1,7 @@
++#pragma ACC modules "export-all"
++#pragma ACC modules "export-macros"
++module;
++#include "asio.hpp"
++#include "asio/ssl.hpp"
++export module asio;
++
+--- /dev/null
++++ asio.modulemap
+@@ -0,0 +1,5 @@
++module asio {
++    header "asio/include/asio.hpp"
++    header "asio/include/asio/ssl.hpp"
++}
++

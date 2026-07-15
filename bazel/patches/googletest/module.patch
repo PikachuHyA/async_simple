@@ -1,0 +1,106 @@
+--- MODULE.bazel
++++ MODULE.bazel
+@@ -79,3 +79,4 @@
+ fuchsia_sdk = use_extension("//:fake_fuchsia_sdk.bzl", "fuchsia_sdk")
+ fuchsia_sdk.create_fake()
+ use_repo(fuchsia_sdk, "fuchsia_sdk")
++bazel_dep(name = "std_module")
+--- BUILD.bazel
++++ BUILD.bazel
+@@ -1,4 +1,3 @@
+-# Copyright 2017 Google Inc.
+ # All Rights Reserved.
+ #
+ #
+@@ -183,7 +182,9 @@
+             "@fuchsia_sdk//pkg/zx",
+         ],
+         "//conditions:default": [],
+-    }),
++    }) + ["@std_module//:std"],
++    module_interfaces = ["googletest.cppm"],
++    module_header_maps = ["googletest.modulemap"],
+ )
+ 
+ # `gtest`, but testonly. See guidance on `gtest` for when to use this.
+--- /dev/null
++++ googletest.cppm
+@@ -0,0 +1,39 @@
++#pragma ACC modules "export-all"
++#pragma ACC modules "export-macros"
++module;
++#include "gtest/gtest-assertion-result.h"
++#include "gtest/gtest-message.h"
++#include "gtest/gtest-spi.h"
++#include "gtest/gtest.h"
++#include "gtest/gtest-death-test.h"
++#include "gtest/gtest-param-test.h"
++#include "gtest/gtest-test-part.h"
++#include "gtest/gtest_pred_impl.h"
++#include "gtest/gtest-matchers.h"
++#include "gtest/gtest-printers.h"
++#include "gtest/gtest-typed-test.h"
++#include "gtest/gtest_prod.h"
++#include "gmock/gmock-actions.h"
++#include "gmock/gmock-function-mocker.h"
++#include "gmock/gmock-more-actions.h"
++#include "gmock/gmock-nice-strict.h"
++#include "gmock/gmock.h"
++#include "gmock/gmock-cardinalities.h"
++#include "gmock/gmock-matchers.h"
++#include "gmock/gmock-more-matchers.h"
++#include "gmock/gmock-spec-builders.h"
++
++// internal
++#include "gtest/internal/gtest-death-test-internal.h"
++#include "gtest/internal/gtest-filepath.h"
++#include "gtest/internal/gtest-internal.h"
++#include "gtest/internal/gtest-param-util.h"
++#include "gtest/internal/gtest-port-arch.h"
++#include "gtest/internal/gtest-port.h"
++#include "gtest/internal/gtest-string.h"
++#include "gtest/internal/gtest-type-util.h"
++#include "gmock/internal/gmock-internal-utils.h"
++#include "gmock/internal/gmock-port.h"
++#include "gmock/internal/gmock-pp.h"
++export module googletest;
++
+--- /dev/null
++++ googletest.modulemap
+@@ -0,0 +1,36 @@
++module googletest {
++    header "googletest/include/gtest/gtest-assertion-result.h"
++    header "googletest/include/gtest/gtest-message.h"
++    header "googletest/include/gtest/gtest-spi.h"
++    header "googletest/include/gtest/gtest.h"
++    header "googletest/include/gtest/gtest-death-test.h"
++    header "googletest/include/gtest/gtest-param-test.h"
++    header "googletest/include/gtest/gtest-test-part.h"
++    header "googletest/include/gtest/gtest_pred_impl.h"
++    header "googletest/include/gtest/gtest-matchers.h"
++    header "googletest/include/gtest/gtest-printers.h"
++    header "googletest/include/gtest/gtest-typed-test.h"
++    header "googletest/include/gtest/gtest_prod.h"
++    // gmock
++    header "googlemock/include/gmock/gmock-actions.h"
++    header "googlemock/include/gmock/gmock-function-mocker.h"
++    header "googlemock/include/gmock/gmock-more-actions.h"
++    header "googlemock/include/gmock/gmock-nice-strict.h"
++    header "googlemock/include/gmock/gmock.h"
++    header "googlemock/include/gmock/gmock-cardinalities.h"
++    header "googlemock/include/gmock/gmock-matchers.h"
++    header "googlemock/include/gmock/gmock-more-matchers.h"
++    header "googlemock/include/gmock/gmock-spec-builders.h"
++    // internal
++    header "googletest/include/gtest/internal/gtest-death-test-internal.h"
++    header "googletest/include/gtest/internal/gtest-filepath.h"
++    header "googletest/include/gtest/internal/gtest-internal.h"
++    header "googletest/include/gtest/internal/gtest-param-util.h"
++    header "googletest/include/gtest/internal/gtest-port-arch.h"
++    header "googletest/include/gtest/internal/gtest-port.h"
++    header "googletest/include/gtest/internal/gtest-string.h"
++    header "googletest/include/gtest/internal/gtest-type-util.h"
++    header "googlemock/include/gmock/internal/gmock-internal-utils.h"
++    header "googlemock/include/gmock/internal/gmock-port.h"
++    header "googlemock/include/gmock/internal/gmock-pp.h"
++}

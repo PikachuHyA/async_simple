@@ -1,0 +1,7 @@
+--- /dev/null
++++ aio.cppm
+@@ -0,0 +1,4 @@
++module;
++#include "aio.h"
++export module aio;
++

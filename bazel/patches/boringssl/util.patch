@@ -1,0 +1,19 @@
+--- util/util.bzl
++++ util/util.bzl
+@@ -189,6 +189,8 @@ def bssl_cc_library(
+         srcs = [],
+         testonly = False,
+         alwayslink = False,
++        module_interfaces = [],
++        module_header_maps = [],
+         visibility = []):
+     copts, deps, srcs = handle_mixed_c_cxx(
+         name = name,
+@@ -228,5 +230,7 @@ def bssl_cc_library(
+         deps = deps,
+         testonly = testonly,
+         alwayslink = alwayslink,
++        module_interfaces = module_interfaces,
++        module_header_maps = module_header_maps,
+         **linkstatic_kwargs(linkstatic)
+     )

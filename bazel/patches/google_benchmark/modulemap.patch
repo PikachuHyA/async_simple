@@ -1,0 +1,7 @@
+--- /dev/null
++++ google_benchmark.modulemap
+@@ -0,0 +1,4 @@
++module google_benchmark {
++    header "include/benchmark/benchmark.h"
++    header "include/benchmark/export.h"
++}

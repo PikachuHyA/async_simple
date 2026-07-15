@@ -1,0 +1,11 @@
+--- /dev/null
++++ ssl.modulemap
+@@ -0,0 +1,8 @@
++module boringssl_ssl {
++    header "include/openssl/dtls1.h"
++    header "include/openssl/srtp.h"
++    header "include/openssl/ssl.h"
++    header "include/openssl/ssl3.h"
++    header "include/openssl/tls1.h"
++}
++

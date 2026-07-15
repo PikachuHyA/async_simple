@@ -1,0 +1,25 @@
+--- BUILD.bazel
++++ BUILD.bazel
+@@ -77,9 +77,11 @@ bssl_cc_library(
+     linkopts = select({
+         "@platforms//os:windows": [
+             "-defaultlib:advapi32.lib",
+             "-defaultlib:ws2_32.lib",
+         ],
+         "//conditions:default": ["-pthread"],
+     }),
+     visibility = ["//visibility:public"],
++    module_interfaces = ["crypto.cppm"],
++    module_header_maps = ["crypto.modulemap"],
+ )
+@@ -88,8 +90,10 @@ bssl_cc_library(
+     name = "ssl",
+     srcs = ssl_sources,
+     hdrs = ssl_headers,
+     copts = ["-DBORINGSSL_IMPLEMENTATION"],
+     internal_hdrs = ssl_internal_headers,
+     visibility = ["//visibility:public"],
+     deps = [":crypto_internal"],
++    module_interfaces = ["ssl.cppm"],
++    module_header_maps = ["ssl.modulemap"],
+ )

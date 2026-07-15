@@ -28,18 +28,24 @@ uthread_hdrs = select({
     "//conditions:default": [],
 })
 
-cc_library(
+#cc_library(
+#    name = "simple_executors",
+#    hdrs = glob(["async_simple/executors/*.h"]),
+#    defines = select({
+#        "//bazel/config:async_simple_has_not_aio": ["ASYNC_SIMPLE_HAS_NOT_AIO"],
+#        "//conditions:default": [],
+#    }),
+#    visibility = ["//visibility:public"],
+#    deps = select({
+#        "//bazel/config:async_simple_has_not_aio": [],
+#        "//conditions:default": ["@libaio//:aio"],
+#    }),
+#)
+
+alias(
     name = "simple_executors",
-    hdrs = glob(["async_simple/executors/*.h"]),
-    defines = select({
-        "//bazel/config:async_simple_has_not_aio": ["ASYNC_SIMPLE_HAS_NOT_AIO"],
-        "//conditions:default": [],
-    }),
+    actual = "async_simple",
     visibility = ["//visibility:public"],
-    deps = select({
-        "//bazel/config:async_simple_has_not_aio": [],
-        "//conditions:default": ["@libaio//:aio"],
-    }),
 )
 
 cc_library(
@@ -50,12 +56,31 @@ cc_library(
     hdrs = glob([
         "async_simple/*.h",
         "async_simple/coro/*.h",
+        "async_simple/executors/*.h",
         "async_simple/util/*.h",
     ]) + uthread_hdrs,
     copts = ASYNC_SIMPLE_COPTS,
+    defines = select({
+        "//bazel/config:async_simple_has_not_aio": ["ASYNC_SIMPLE_HAS_NOT_AIO"],
+        "//conditions:default": [],
+    }),
     linkopts = select({
         "@platforms//os:windows": [],
         "//conditions:default": ["-lpthread"],
     }),
     visibility = ["//visibility:public"],
+    deps = select({
+        "//bazel/config:async_simple_has_not_aio": [],
+        "//conditions:default": ["@libaio//:aio"],
+    }) + [
+        "@std_module//:std"
+    ],
+    module_interfaces = [
+        "async_simple/async_simple.cppm",
+        # "async_simple/std.mock.cppm",
+    ],
+    module_header_maps = [
+        "async_simple/async_simple.modulemap",
+        # "async_simple/std.modulemap",
+        ]
 )

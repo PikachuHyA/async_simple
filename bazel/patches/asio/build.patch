@@ -1,0 +1,23 @@
+--- /dev/null
++++ BUILD.bazel
+@@ -0,0 +1,20 @@
++load("@rules_cc//cc:defs.bzl", "cc_library")
++
++cc_library(
++    name = "asio",
++    srcs = [
++        "asio/src/asio.cpp",
++        "asio/src/asio_ssl.cpp",
++    ],
++    hdrs = glob([
++        "asio/include/**/*.hpp",
++        "asio/include/**/*.ipp",
++    ]),
++    includes = ["asio/include"],
++    local_defines = ["ASIO_SEPARATE_COMPILATION"],
++    visibility = ["//visibility:public"],
++    deps = ["@boringssl//:ssl"] + ["@std_module//:std"],
++    module_interfaces = ["asio.cppm"],
++    module_header_maps = ["asio.modulemap"],
++)
++

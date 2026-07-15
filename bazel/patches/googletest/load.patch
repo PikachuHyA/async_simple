@@ -1,0 +1,8 @@
+--- BUILD.bazel
++++ BUILD.bazel
+@@ -30,3 +30,5 @@
+ #   Bazel Build for Google C++ Testing Framework(Google Test)
+ 
++load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
++
+ package(default_visibility = ["//visibility:public"])

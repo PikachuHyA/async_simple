@@ -1,0 +1,13 @@
+--- /dev/null
++++ ssl.cppm
+@@ -0,0 +1,10 @@
++#pragma ACC modules "export-all"
++#pragma ACC modules "export-macros"
++module;
++#include "openssl/dtls1.h"
++#include "openssl/srtp.h"
++#include "openssl/ssl.h"
++#include "openssl/ssl3.h"
++#include "openssl/tls1.h"
++export module boringssl_ssl;
++

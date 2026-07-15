@@ -1,0 +1,9 @@
+build --incompatible_strict_action_env
+common --enable_platform_specific_config
+common --experimental_cpp_modules
+common --features cpp_modules
+common --features fast_scanning_in_cpp20_module
+common --repo_env=BAZEL_CXXOPTS=-std=c++20
+common --copt -Rmodule-include-translation
+common --copt -Xclang --copt -fmodules-embed-all-files
+common --copt -pthread

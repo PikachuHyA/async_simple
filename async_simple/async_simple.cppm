@@ -1,3 +1,4 @@
+#pragma ACC modules "export-macros"
 // There unhandled macro uses found in the body:
 //	'CPU_SETSIZE' defined in /usr/include/sched.h:82:10
 //	'CPU_ISSET' defined in /usr/include/sched.h:85:10

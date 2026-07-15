@@ -1,0 +1,6 @@
+exports_files([
+    "build.patch",
+    "cppm.patch",
+    "module-bazel.patch",
+    "modulemap.patch",
+])

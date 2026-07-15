@@ -1,0 +1,42 @@
+--- /dev/null
++++ googletest.cppm
+@@ -0,0 +1,39 @@
++#pragma ACC modules "export-all"
++#pragma ACC modules "export-macros"
++module;
++#include "gtest/gtest-assertion-result.h"
++#include "gtest/gtest-message.h"
++#include "gtest/gtest-spi.h"
++#include "gtest/gtest.h"
++#include "gtest/gtest-death-test.h"
++#include "gtest/gtest-param-test.h"
++#include "gtest/gtest-test-part.h"
++#include "gtest/gtest_pred_impl.h"
++#include "gtest/gtest-matchers.h"
++#include "gtest/gtest-printers.h"
++#include "gtest/gtest-typed-test.h"
++#include "gtest/gtest_prod.h"
++#include "gmock/gmock-actions.h"
++#include "gmock/gmock-function-mocker.h"
++#include "gmock/gmock-more-actions.h"
++#include "gmock/gmock-nice-strict.h"
++#include "gmock/gmock.h"
++#include "gmock/gmock-cardinalities.h"
++#include "gmock/gmock-matchers.h"
++#include "gmock/gmock-more-matchers.h"
++#include "gmock/gmock-spec-builders.h"
++
++// internal
++#include "gtest/internal/gtest-death-test-internal.h"
++#include "gtest/internal/gtest-filepath.h"
++#include "gtest/internal/gtest-internal.h"
++#include "gtest/internal/gtest-param-util.h"
++#include "gtest/internal/gtest-port-arch.h"
++#include "gtest/internal/gtest-port.h"
++#include "gtest/internal/gtest-string.h"
++#include "gtest/internal/gtest-type-util.h"
++#include "gmock/internal/gmock-internal-utils.h"
++#include "gmock/internal/gmock-port.h"
++#include "gmock/internal/gmock-pp.h"
++export module googletest;
++

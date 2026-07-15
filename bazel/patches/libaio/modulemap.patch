@@ -1,0 +1,6 @@
+--- /dev/null
++++ aio.modulemap
+@@ -0,0 +1,3 @@
++module aio {
++    header "src/libaio.h"
++}

@@ -1,0 +1,24 @@
+--- BUILD.bazel
++++ BUILD.bazel
+@@ -5,7 +5,7 @@
+ COPTS = [
+     "-pedantic",
+     "-pedantic-errors",
+-    "-std=c++17",
++    # "-std=c++17",
+     "-Wall",
+     "-Wconversion",
+     "-Wextra",
+@@ -81,7 +81,11 @@
+     deps = select({
+         ":perfcounters": ["@libpfm"],
+         "//conditions:default": [],
+-    }),
++    }) + [
++        "@std_module//:std"
++    ],
++    module_interfaces = ["google_benchmark.cppm"],
++    module_header_maps = ["google_benchmark.modulemap"],
+ )
+ 
+ cc_library(
